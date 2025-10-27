@@ -10,26 +10,34 @@
 # - For auto-instrumentation by container injection, the Linux command cp is
 #   used and must be available in the image.
 FROM python:3.11 AS build
-
 WORKDIR /operator-build
-
 ADD requirements.txt .
+ADD zcy_logger-0.0.1-py3-none-any.whl ./
+ADD opentelemetry_instrumentation_requestid-0.58b2-py3-none-any.whl ./
+RUN mkdir workspace && pip install --target workspace ./zcy_logger-0.0.1-py3-none-any.whl
+RUN pip install --target workspace -r requirements.txt
+RUN pip install --target workspace ./opentelemetry_instrumentation_requestid-0.58b2-py3-none-any.whl
 
-RUN mkdir workspace && pip install --target workspace -r requirements.txt
+COPY xrequest workspace/opentelemetry/instrumentation/xrequest
+COPY sitecustomize.py workspace/opentelemetry/
 
 FROM python:3.11-alpine AS build-musl
 
 WORKDIR /operator-build
-
 ADD requirements.txt .
+ADD zcy_logger-0.0.1-py3-none-any.whl ./
+ADD opentelemetry_instrumentation_requestid-0.58b2-py3-none-any.whl ./
+RUN mkdir workspace && pip install --target workspace ./zcy_logger-0.0.1-py3-none-any.whl
+RUN pip install --target workspace -r requirements.txt
+RUN pip install --target workspace ./opentelemetry_instrumentation_requestid-0.58b2-py3-none-any.whl
 
-RUN apk add gcc python3-dev musl-dev linux-headers
-RUN mkdir workspace && pip install --target workspace -r requirements.txt
+COPY xrequest workspace/opentelemetry/instrumentation/xrequest
+COPY sitecustomize.py workspace/opentelemetry/
+
 
 FROM busybox
-
 COPY --from=build /operator-build/workspace /autoinstrumentation
 COPY --from=build-musl /operator-build/workspace /autoinstrumentation-musl
-
+ADD sitecustomize.py /autoinstrumentation/opentelemetry/instrumentation/auto_instrumentation/
 RUN chmod -R go+r /autoinstrumentation
 RUN chmod -R go+r /autoinstrumentation-musl
