@@ -24,6 +24,8 @@ COPY sitecustomize.py workspace/opentelemetry/
 FROM python:3.11-alpine AS build-musl
 
 WORKDIR /operator-build
+RUN apk add gcc python3-dev musl-dev linux-headers
+
 ADD requirements.txt .
 ADD zcy_logger-0.0.1-py3-none-any.whl ./
 ADD opentelemetry_instrumentation_requestid-0.58b2-py3-none-any.whl ./

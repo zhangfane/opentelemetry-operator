@@ -14,7 +14,11 @@
 
 from opentelemetry.instrumentation.auto_instrumentation import initialize
 import sys
+import multiprocessing
+
 if not sys.stdin.isatty():
+    if multiprocessing.get_start_method(allow_none=True) is None:
+        multiprocessing.set_start_method("spawn")
     initialize()
     from opentelemetry.instrumentation.xrequest import RequestIdPropagatorInstrumentor
     RequestIdPropagatorInstrumentor().instrument_app()
