@@ -101,7 +101,6 @@ class RequestIdFallbackTracePropagator(TextMapPropagator):
         current = trace.get_current_span(ctx)
         if current and current.get_span_context().is_valid:
             return ctx
-        print(self._request_id_headers)
         # 2) 无有效 traceparent，回退到 request id
         req_id = _extract_request_id_from_headers(carrier, getter, self._request_id_headers)
         if not req_id:
