@@ -1,8 +1,6 @@
 module github.com/open-telemetry/opentelemetry-operator
 
-go 1.24.0
-
-toolchain go1.24.1
+go 1.25.2
 
 retract v1.51.0
 
@@ -32,7 +30,7 @@ require (
 	github.com/prometheus/common v0.65.0
 	github.com/prometheus/prometheus v0.301.0
 	github.com/shirou/gopsutil v3.21.11+incompatible
-	github.com/spf13/pflag v1.0.6
+	github.com/spf13/pflag v1.0.7
 	github.com/stretchr/testify v1.11.1
 	go.opentelemetry.io/collector/featuregate v1.37.0
 	go.opentelemetry.io/otel v1.38.0
@@ -230,16 +228,39 @@ require gotest.tools/v3 v3.5.2
 
 require (
 	github.com/goccy/go-yaml v1.18.0
+	github.com/josepdcs/kubectl-prof v1.0.1
 	go.opentelemetry.io/contrib/otelconf v0.18.0
 )
 
 require (
+	github.com/Azure/go-ansiterm v0.0.0-20230124172434-306776ec8161 // indirect
+	github.com/MakeNowJust/heredoc v1.0.0 // indirect
+	github.com/agrison/go-commons-lang v0.0.0-20240106075236-2e001e6401ef // indirect
+	github.com/alitto/pond v1.9.2 // indirect
 	github.com/cenkalti/backoff/v5 v5.0.3 // indirect
+	github.com/chai2010/gettext-go v1.0.3 // indirect
 	github.com/envoyproxy/go-control-plane/envoy v1.32.4 // indirect
+	github.com/exponent-io/jsonpath v0.0.0-20210407135951-1de76d718b3f // indirect
+	github.com/fatih/camelcase v1.0.0 // indirect
+	github.com/go-errors/errors v1.5.1 // indirect
 	github.com/golang/snappy v1.0.0 // indirect
 	github.com/google/btree v1.1.3 // indirect
+	github.com/google/shlex v0.0.0-20191202100458-e7afc7fbc510 // indirect
+	github.com/gregjones/httpcache v0.0.0-20190611155906-901d90724c79 // indirect
+	github.com/klauspost/compress v1.18.0 // indirect
+	github.com/liggitt/tabwriter v0.0.0-20181228230101-89fcab3d43de // indirect
+	github.com/mitchellh/go-wordwrap v1.0.1 // indirect
+	github.com/moby/spdystream v0.5.0 // indirect
+	github.com/moby/term v0.5.0 // indirect
+	github.com/monochromegane/go-gitignore v0.0.0-20200626010858-205db1a8cc00 // indirect
+	github.com/mxk/go-flowrate v0.0.0-20140419014527-cca7078d478f // indirect
+	github.com/peterbourgon/diskv v2.0.1+incompatible // indirect
 	github.com/prometheus/otlptranslator v0.0.2 // indirect
 	github.com/prometheus/sigv4 v0.1.0 // indirect
+	github.com/rasky/go-lzo v0.0.0-20200203143853-96a758eda86e // indirect
+	github.com/russross/blackfriday/v2 v2.1.0 // indirect
+	github.com/samber/lo v1.51.0 // indirect
+	github.com/xlab/treeprint v1.2.0 // indirect
 	go.opentelemetry.io/otel/exporters/otlp/otlplog/otlploggrpc v0.14.0 // indirect
 	go.opentelemetry.io/otel/exporters/otlp/otlplog/otlploghttp v0.14.0 // indirect
 	go.opentelemetry.io/otel/exporters/otlp/otlpmetric/otlpmetricgrpc v1.38.0 // indirect
@@ -253,4 +274,10 @@ require (
 	go.opentelemetry.io/otel/sdk/log v0.14.0 // indirect
 	go.yaml.in/yaml/v2 v2.4.2 // indirect
 	go.yaml.in/yaml/v3 v3.0.4 // indirect
+	k8s.io/cli-runtime v0.32.0 // indirect
+	k8s.io/kubectl v0.32.0 // indirect
+	sigs.k8s.io/kustomize/api v0.18.0 // indirect
+	sigs.k8s.io/kustomize/kyaml v0.18.1 // indirect
 )
+
+replace github.com/josepdcs/kubectl-prof v1.0.1 => github.com/zhangfane/kubectl-prof v0.0.0-20251107214355-a3572a86a738

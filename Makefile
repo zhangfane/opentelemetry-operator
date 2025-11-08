@@ -42,10 +42,11 @@ else
 endif
 
 # Image URL to use all building/pushing image targets
-DOCKER_USER ?= open-telemetry
-IMG_PREFIX ?= ghcr.io/${DOCKER_USER}/opentelemetry-operator
+DOCKER_USER ?= zfane
+IMG_PREFIX ?= registry.cn-hangzhou.aliyuncs.com/${DOCKER_USER}
 IMG_REPO ?= opentelemetry-operator
 IMG ?= ${IMG_PREFIX}/${IMG_REPO}:${VERSION}
+#IMG ?= registry.cn-hangzhou.aliyuncs.com/zfane/autoinstrumentation-python:debug
 BUNDLE_IMG ?= ${IMG_PREFIX}/${IMG_REPO}-bundle:${VERSION}
 
 TARGETALLOCATOR_IMG_REPO ?= target-allocator
@@ -64,7 +65,7 @@ INSTRUMENTATION_NODEJS_IMG_REPO ?= autoinstrumentation-nodejs
 INSTRUMENTATION_NODEJS_IMG ?= ${IMG_PREFIX}/${INSTRUMENTATION_NODEJS_IMG_REPO}:${INSTRUMENTATION_NODEJS_VERSION}
 
 INSTRUMENTATION_PYTHON_IMG_REPO ?= autoinstrumentation-python
-INSTRUMENTATION_PYTHON_IMG ?= ${IMG_PREFIX}/${INSTRUMENTATION_PYTHON_IMG_REPO}:${INSTRUMENTATION_PYTHON_VERSION}
+INSTRUMENTATION_PYTHON_IMG ?= registry.cn-hangzhou.aliyuncs.com/zfane/autoinstrumentation-python:debug
 
 INSTRUMENTATION_DOTNET_IMG_REPO ?= autoinstrumentation-dotnet
 INSTRUMENTATION_DOTNET_IMG ?= ${IMG_PREFIX}/${INSTRUMENTATION_DOTNET_IMG_REPO}:${INSTRUMENTATION_DOTNET_VERSION}
@@ -483,10 +484,12 @@ container-instrumentation-nodejs:
 	docker build --load -t ${INSTRUMENTATION_NODEJS_IMG} autoinstrumentation/nodejs \
 		--build-arg version=${INSTRUMENTATION_NODEJS_VERSION}
 
+TIMESTAMP := $(shell date -u +%Y%m%d%H%M%S)
+
 .PHONY: container-instrumentation-python
 container-instrumentation-python:
-	docker build --load -t ${INSTRUMENTATION_PYTHON_IMG} autoinstrumentation/python \
-		--build-arg version=${INSTRUMENTATION_PYTHON_VERSION}
+	docker buildx build --platform linux/amd64 -t ${INSTRUMENTATION_PYTHON_IMG}-${TIMESTAMP} --push --build-arg version=${INSTRUMENTATION_PYTHON_VERSION} autoinstrumentation/python/
+	skopeo copy docker://${INSTRUMENTATION_PYTHON_IMG}-${TIMESTAMP} docker://docker-image.cai-inc.com/geekops/autoinstrumentation-python:${VERSION} --multi-arch all
 
 .PHONY: container-instrumentation-dotnet
 container-instrumentation-dotnet:

@@ -165,6 +165,7 @@ func main() {
 		LeaderElection:                cfg.EnableLeaderElection,
 		LeaderElectionID:              "9f7554c3.opentelemetry.io",
 		LeaderElectionReleaseOnCancel: true,
+		LeaderElectionNamespace:       "default",
 		LeaseDuration:                 &leaseDuration,
 		RenewDeadline:                 &renewDeadline,
 		RetryPeriod:                   &retryPeriod,
@@ -308,6 +309,7 @@ func main() {
 	}
 
 	if cfg.OpAmpBridgeAvailability == opampbridge.Available {
+
 		if err = controllers.NewOpAMPBridgeReconciler(controllers.OpAMPBridgeReconcilerParams{
 			Client:   mgr.GetClient(),
 			Log:      ctrl.Log.WithName("controllers").WithName("OpAMPBridge"),
@@ -318,6 +320,10 @@ func main() {
 			setupLog.Error(err, "unable to create controller", "controller", "OpAMPBridge")
 			os.Exit(1)
 		}
+	}
+	if err = controllers.NewProfileReconciler(mgr.GetClient(), mgr.GetScheme(), ctrl.Log.WithName("profile"), mgr.GetEventRecorderFor("otel-profile"), mgr.GetConfig()).SetupWithManager(mgr); err != nil {
+		setupLog.Error(err, "unable to create controller", "controller", "profile")
+		os.Exit(1)
 	}
 
 	if cfg.PrometheusCRAvailability == prometheus.Available && cfg.CreateServiceMonitorOperatorMetrics {
