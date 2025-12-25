@@ -20,7 +20,7 @@ if not sys.stdin.isatty():
     if multiprocessing.get_start_method(allow_none=True) is None:
         multiprocessing.set_start_method("spawn")
     initialize()
-    from opentelemetry.instrumentation.xrequest import RequestIdPropagatorInstrumentor
-    RequestIdPropagatorInstrumentor().instrument_app()
+    # from opentelemetry.instrumentation.xrequest import RequestIdPropagatorInstrumentor
+    # RequestIdPropagatorInstrumentor().instrument_app()
     from zcy_logger import init_logging
     init_logging(level="INFO", json_output=True)
